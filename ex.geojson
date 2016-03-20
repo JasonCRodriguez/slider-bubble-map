@@ -1,6 +1,10 @@
 {"crs": "EPSG:3857", "type": "FeatureCollection",
 "features": [
-{"geometry": {"type": "Point", "coordinates": [-71.16706, 42.59048]}, "type": "Feature", "properties": {"id": 7884, "size": 3}},
+{"geometry": 
+	{"type": "Point", "coordinates": [-71.16706, 42.59048]
+	}, 
+	"type": "Feature", "properties": {"id": 7884, "size": 3}
+	},
 {"geometry": {"type": "Point", "coordinates": [-71.01706, 42.09048]}, "type": "Feature", "properties": {"id": 277, "size": 0}}, 
 {"geometry": {"type": "Point", "coordinates": [-71.36706, 42.19048]}, "type": "Feature", "properties": {"id": 3110, "size": 4}}, 
 {"geometry": {"type": "Point", "coordinates": [-70.16706, 42.29048]}, "type": "Feature", "properties": {"id": 1384, "size": 3}}, 

@@ -1,21 +1,25 @@
 <html>
 <head>
   <title>A Leaflet map!</title>
+  
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
   <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  
+  <link rel="stylesheet" href="../dist/leaflet-slider.css"/>
+  <script src="../dist/leaflet-slider.js"></script>
+  <script src="leaflet/leaflet.ajax.min.js" type="text/javascript"></script>
+
   <style>
     #map{ height: 100% }
   </style>
 </head>
 <body>
-
   <div id="map"></div>
 
   <script>
-
   // initialize the map
-  var map = L.map('map').setView([42.35, -71.08], 9);
+  var map = L.map('map').setView([39.50, -98.35], 4);
 
   // load a tile layer
   L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',
@@ -25,11 +29,38 @@
       minZoom: 1
     }).addTo(map);
 
+var geojsonMarkerOptions = {
+    radius: 15,
+    fillColor: "#ff7800",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};
+
+
   // load GeoJSON from an external file
-  $.getJSON("ex.geojson",function(data){
+  $.getJSON("unipeds.geojson",function(data){
     // add GeoJSON layer to the map once the file is loaded
-    L.geoJson(data).addTo(map);
+    L.geoJson(data, {
+    pointToLayer: function (feature, latlng) { return L.circleMarker(latlng, geojsonMarkerOptions);
+    }
+}).addTo(map);
   });
+
+  slider = L.control.slider(function(value) {
+            console.log(value);
+	    geojsonMarkerOptions.radius = value;
+	    console.log(geojsonMarkerOptions.radius);
+        }, {
+        max: 6,
+        value: 5,
+        step:0.1,
+  position:'bottomleft',
+        size: '250px',
+        orientation:'vertical',
+        id: 'slider'
+  }).addTo(map);
 
   </script>
 </body>
