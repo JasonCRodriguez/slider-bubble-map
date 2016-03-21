@@ -6,9 +6,8 @@ Create a map with bubbles of various size (depending on some metric) and a slide
 | ------ |
 | ex.geojson |
 | index.html |
-| index_add_slider.html |
 | jquery-2.1.1.min.js |
 | leaflet-slider.html |
-| rodents.geojson |
+| unipeds.geojson |
 | leaflet/ |
 
