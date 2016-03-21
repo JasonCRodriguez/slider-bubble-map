@@ -3,7 +3,7 @@
   <title>A Leaflet map!</title>
   
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
-  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+  <script src="leaflet/leaflet.js"></script>
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   
   <link rel="stylesheet" href="../dist/leaflet-slider.css"/>
@@ -29,29 +29,51 @@
       minZoom: 1
     }).addTo(map);
 
-var geojsonMarkerOptions = {
-    radius: 15,
-    fillColor: "#ff7800",
-    color: "#000",
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.8
-};
+  function style(feature) {
+    return {
+      radius: getSize(feature.properties.fall_total_undergrad)/3,
+      fillColor: getColor(feature.properties.ftretention_rate),
+      color: "#000",
+      weight: 1,
+      opacity: 1,
+      fillOpacity: 0.8
+    }
+  };
 
+  function getColor(d) {
+    return d > 0.9 ? '#d01c8b' :
+    d > 0.7  ? '#b8e186' :
+    d > 0.5  ? '#f7f7f7' :
+    d > 0.3  ? '#f1b6da' :
+    d > 0.2   ? '#d01c8b' :
+    '#f7f7f7';
+}
+
+  function getSize(d) {
+    return d  > 30000 ? 20 :
+    d > 20000 ? 15 :
+    d > 10000 ? 20 :
+    d > 5000  ? 15 :
+    d > 2000  ? 10 :
+    5 ;
+  }
 
   // load GeoJSON from an external file
   $.getJSON("unipeds.geojson",function(data){
     // add GeoJSON layer to the map once the file is loaded
     L.geoJson(data, {
-    pointToLayer: function (feature, latlng) { return L.circleMarker(latlng, geojsonMarkerOptions);
+    pointToLayer: function (feature, latlng) { return L.circleMarker(latlng, style(feature));
+    },
+    onEachFeature: function (feature, layer) {
+      if (feature.properties.instname != 'NULL') {
+        layer.bindPopup(feature.properties.instname);
+      }
     }
 }).addTo(map);
   });
 
   slider = L.control.slider(function(value) {
             console.log(value);
-	    geojsonMarkerOptions.radius = value;
-	    console.log(geojsonMarkerOptions.radius);
         }, {
         max: 6,
         value: 5,
